@@ -1,0 +1,18 @@
+<template>
+    <section class="container">
+         <div class="mt-5 mx-3">
+        <PageProduct/>
+    </div>
+    
+
+    </section>
+   
+</template>
+    
+<script setup>
+    import PageProduct from './PageProduct.vue'
+</script>
+    
+<style scoped>
+
+</style>
