@@ -1,21 +1,24 @@
 <template>
   <h1>ยินดีต้อนรับสู่ร้านค้าประจำเกษตรศาสตร์ศรีราชา</h1>
-  <div class="row">
-    <div v-for="(pd, pdId) in products" :key="pdId" class="col-lg-4 col-md-6 col-sm-12">
-      <div class="card" style="width: 18rem;background-color:#EEEEEE;">
-        <img :src="`http://localhost:3000/img_pd/${pd.pdId}.jpg`" class="card-img-top p-2" alt="" />
-        <div class="card-body">
-          <h5 class="card-title">{{ pd.pdName }}</h5>
-          <p class="card-text">- {{ pd.pdPrice }}</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+  <div class="container py-4">
+    <div class="row ">
+      <div v-for="(pd, pdId) in products" :key="pdId" class="col-lg-4 col-md-6 col-sm-12 ">
+        <div class="card" style="width: 18rem;background-color:#EEEEEE;">
+          <img :src="`http://localhost:3000/img_pd/${pd.pdId}.jpg`" class="card-img-top p-2" alt="" />
+          <div class="card-body">
+            <h5 class="card-title">{{ pd.pdName }}</h5>
+            <p class="card-text">- {{ pd.pdPrice }}</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script setup>
-import  axios  from 'axios'
+import axios from 'axios'
 import { onMounted, ref } from 'vue'; // import function ref มาจาก vue   
 const products = ref([]) // ประกาศตัวแปร แบบ Composition API ใช้ function ref()
 // เริ่มทำงานเมื่อเกิดการ mount Component
