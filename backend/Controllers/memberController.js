@@ -1,12 +1,13 @@
 import database from "../Services/database.js";
 import bcrypt from "bcrypt"
+
 export const postMember = async (req, res) => {
   console.log("POST /member is requested.");
   try {
     const bodyData = req.body;
     if (!bodyData.memEmail || !bodyData.memName) {
       return res.json({
-        message: " Error memEmail and memName is required",
+        message: " Error memEmail and memName is required",regist:false
       });
     }
     const chkRow = await database.query({
@@ -15,7 +16,7 @@ export const postMember = async (req, res) => {
     });
     if (chkRow.rowCount != 0) {
       return res.json({
-        message: `ERROR memEmail ${req.body.memEmail} is  exists`,
+        message: `ERROR memEmail ${req.body.memEmail} is  exists`,regist:false
       });
     }
 
@@ -33,9 +34,8 @@ export const postMember = async (req, res) => {
    
       ],
     });
-    const datetime = new Date();
-    bodyData.createDate = datetime;
-    bodyData.message = "OK";
+    bodyData.createDate = "Regist Success";
+    bodyData.regist = true;
     res.json(bodyData);
   } catch (err) {
     console.log(err);
