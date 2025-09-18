@@ -1,7 +1,7 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg bg-success ">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Kushop</a>
+      <a class="navbar-brand text-white fw-bold" href="# ">Kushop</a>
       <button
         class="navbar-toggler" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
@@ -12,13 +12,25 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link to="/" class="nav-link">Home</router-link>
+            <router-link to="/" class="nav-link text-white">Home</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/product" class="nav-link">Product</router-link>
+            <router-link to="/product" class="nav-link text-white">Product</router-link>
           </li>
-          <li class="nav-item">
-             <router-link to="/login" class="nav-link">Login</router-link>
+                    <li class="nav-item" v-if="login">
+            <router-link to="/pagemember" style="text-decoration: none">
+              <div class="nav-link fw-bold text-white">{{ memName }}</div>
+            </router-link>
+          </li>
+          <li class="nav-item" v-if="login">
+            <a href="#" @click="memLogout()" style="text-decoration: none">
+              <div class="nav-link fw-bold text-white">ลงชื่อออก</div>
+            </a>
+          </li>
+          <li class="nav-item" v-if="!login">
+            <router-link to="/login" style="text-decoration: none">
+              <div class="nav-link">Login</div>
+            </router-link>
           </li>
        
         </ul>
@@ -26,5 +38,31 @@
     </div>
   </nav>
 </template>
-<script setup></script>
+<script setup>
+import { onMounted, ref } from "vue";
+import axios from "axios";
+axios.defaults.withCredentials = true;
+const member = ref(null);
+const memEmail = ref(null);
+const memName = ref(null);
+const dutyId = ref(null);
+const login = ref(false)
+onMounted(async () => {
+  await getMember();
+});
+
+
+const getMember = async () => {
+  await axios
+    .get(`http://localhost:3000/members/detail`)
+    .then((res) => {
+      member.value = res.data;
+      memEmail.value = member.value.memEmail;
+      memName.value = member.value.memName;
+      dutyId.value = member.value.dutyId;
+      login.value = member.value.login
+    })
+    .catch((err) => console.log(err.message)); //ถ้าผิดพลาดแสดง err
+};
+</script>
 <style></style>
