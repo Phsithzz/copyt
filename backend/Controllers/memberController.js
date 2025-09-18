@@ -1,6 +1,6 @@
 import database from "../Services/database.js";
 import bcrypt from "bcrypt"
-
+import jwt from "jsonwebtoken"
 export const postMember = async (req, res) => {
   console.log("POST /member is requested.");
   try {
@@ -11,7 +11,7 @@ export const postMember = async (req, res) => {
       });
     }
     const chkRow = await database.query({
-      text: `SELECT * FROM members WHERE "memEmail"=$1`,
+      text: `SELECT * FROM members WHERE "memEmail" = $1`,
       values: [req.body.memEmail],
     });
     if (chkRow.rowCount != 0) {
@@ -34,9 +34,11 @@ export const postMember = async (req, res) => {
    
       ],
     });
-    bodyData.createDate = "Regist Success";
+    bodyData.createDate = new Date()
+    bodyData.message = "Regist Success";
     bodyData.regist = true;
     res.json(bodyData);
+
   } catch (err) {
     console.log(err);
     return res.json({

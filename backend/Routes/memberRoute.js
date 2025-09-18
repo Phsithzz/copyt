@@ -1,10 +1,10 @@
-import express from 'express'
+    import express from 'express'
 
-import * as memberController from "../Controllers/memberController.js"
+    import * as memberController from "../Controllers/memberController.js"
 
-const router = express.Router()
+    const router = express.Router()
 
-router.post("/members",memberController.postMember)
-router.post("/login",memberController.loginMember)
+    router.post("/members",memberController.postMember)
+    router.post("/members/login",memberController.loginMember)
 
-export default router 
+    export default router 

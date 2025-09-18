@@ -10,7 +10,15 @@ import cors from 'cors'
 const app = express();
 dotenv.config();
 //รับค่าข้อมูลมาแล้วแปลงเป็นjson
-app.use(cors())
+// เรียกใช้ cors
+// app.use(cors())
+// กำหนด Option ของ cors เพิ่มเติมเมื่อมีการส่งข้อมูล Cookie หรือ Header
+app.use(cors({
+    origin:['http://localhost:5173','http://127.0.0.1:5173'], //Domain ของ Frontend
+    methods:['GET','POST','PUT','DELETE'], //Method ที่อนุญาต
+    credentials:true  //ให้ส่งข้อมูล Header+Cookie ได้
+}))
+
 app.use("/img_pd",express.static("img_pd"))
 app.use(bodyParser.json());
 app.use(productRoute)
