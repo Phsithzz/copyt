@@ -1,6 +1,8 @@
 import database from "../Services/database.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import dotevn from "dotenv"
+
 export const postMember = async (req, res) => {
   console.log("POST /member is requested.");
   try {
@@ -70,15 +72,32 @@ export const loginMember = async (req, res) => {
     }
 
     const loginOk = await bcrypt.compare(req.body.password,result.rows[0].memHash)
-
+    //login สำเร็จแล้ว
     if(loginOk){
-        res.json({
+                 // ********สร้าง Token****
+            // กำหนด Payload ของ Token
+            const theuser={
+                memEmail:result.rows[0].memEmail,
+                memName:result.rows[0].memName,
+                dutyId:result.rows[0].dutyId
+            }
+            const secret_key=process.env.SECRET_KEY //อ่านค่าจาก ENV
+            const token = jwt.sign(theuser,secret_key,{expiresIn:'1h'}) //สร้าง Token
+            // สร้าง Cookie
+            res.cookie('token',token,{
+                maxAge:3600000, //3,600,000 ms --> 60 minute -->1hr,
+                httpOnly: true, // ป้องกันการเข้าถึง Token ผ่าน JavaScript (ป้องกัน XSS)
+                secure: true,
+                sameSite:'strict' // ป้องกันส่ง Cookie ข้าม Domain
+            })
+            res.json({message: `Login Success`,login:true})
+      res.json({
             message:`Login Success `,login:true
 
         })
     }
     else{
-        res.json({
+        return res.json({
             message:"Login Fail",login:false
         })
     }
