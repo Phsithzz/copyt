@@ -22,14 +22,14 @@
               <div class="nav-link fw-bold text-white">{{ memName }}</div>
             </router-link>
           </li>
-          <li class="nav-item" v-if="login">
+          <li class="nav-item " v-if="login">
             <a href="#" @click="memLogout()" style="text-decoration: none">
               <div class="nav-link fw-bold text-white">ลงชื่อออก</div>
             </a>
           </li>
           <li class="nav-item" v-if="!login">
             <router-link to="/login" style="text-decoration: none">
-              <div class="nav-link">Login</div>
+              <div class="nav-link text-white">Login</div>
             </router-link>
           </li>
        
@@ -40,8 +40,11 @@
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
 axios.defaults.withCredentials = true;
+
+const router = useRouter()
 const member = ref(null);
 const memEmail = ref(null);
 const memName = ref(null);
@@ -64,5 +67,19 @@ const getMember = async () => {
     })
     .catch((err) => console.log(err.message)); //ถ้าผิดพลาดแสดง err
 };
+
+const memLogout = async () => {
+  const cf = window.confirm("ต้องการออกจากระบบ?");
+  if (cf) {
+    try {
+      const response = await axios.get(`http://localhost:3000/members/logout`);
+      router.push("/");
+      window.location.reload()
+    } catch (err) {
+      console.log(err);
+    }
+  }
+};
+
 </script>
 <style></style>

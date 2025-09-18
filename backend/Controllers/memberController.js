@@ -4,6 +4,28 @@ import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 dotenv.config();
 
+export const logoutMember = async (req, res) => {
+  console.log("POST /logout member is requested.");
+  try {
+     res.clearCookie('token',{
+                // maxAge:3600000, //3,600,000 ms --> 60 minute -->1hr,
+                httpOnly: true, // ป้องกันการเข้าถึง Token ผ่าน JavaScript (ป้องกัน XSS)
+                secure: true,
+                sameSite:'strict' // ป้องกันส่ง Cookie ข้าม Domain
+            })
+            res.json({message:"Logout Fail",login:false})
+    
+    }
+catch (err) {
+    console.log(err);
+    return res.json({
+      message: err.message
+
+    });
+  }
+};
+
+
 export const getMember = async (req, res) => {
   console.log("GET /member is requested.");
   const token = req.cookies.token

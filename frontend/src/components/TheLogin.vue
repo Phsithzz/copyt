@@ -46,8 +46,10 @@
 import { ref } from 'vue'; // import function ref มาจาก v
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/authStrong';
 axios.defaults.withCredentials = true
 
+const authStore = useAuthStore()
 const router = useRouter()
 const loginName = ref(null)
 const password = ref(null)
@@ -64,8 +66,11 @@ const handleSubmit = async () => {
     login.value = response.data.login
     message.value = response.data.message
     if(login.value){
+     authStore.login()
       router.push('/pagemember')
+      
     }
+
   }
   catch (err) {
     console.log(err)
