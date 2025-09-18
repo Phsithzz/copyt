@@ -43,10 +43,10 @@
     เข้าระบบผิดพลาด-{{ message }}</p>
 </template>
 <script setup>
-import { ref } from 'vue'; // import function ref มาจาก v
+import { ref,onMounted } from 'vue'; // import function ref มาจาก v
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../stores/authStrong';
+import { useAuthStore } from '../stores/authStore';
 axios.defaults.withCredentials = true
 
 const authStore = useAuthStore()
@@ -55,6 +55,22 @@ const loginName = ref(null)
 const password = ref(null)
 const login = ref(null)
 const message = ref(null)
+
+onMounted(async()=>{
+  await getMember()
+  if(login.value){
+    router.push("/pagemember")
+  }
+})
+
+const getMember  = async()=>{
+  await axios.get(`http://localhost:3000/members/detail`)
+  .then((res)=>{
+    login.value = res.data.login
+  })
+  .catch(err=>console.log(err.message))
+}
+
 const handleSubmit = async () => {
   let members = { // กำหนดค่า
     loginName: loginName.value, //ค่าที่ส่งให้ Backend

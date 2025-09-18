@@ -39,17 +39,24 @@
   </nav>
 </template>
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref,watch } from "vue";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/authStore";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
+const authStore = useAuthStore()
 const router = useRouter()
 const member = ref(null);
 const memEmail = ref(null);
 const memName = ref(null);
 const dutyId = ref(null);
 const login = ref(false)
+
+watch(()=>authStore.isLogin,(newValue,oldValue)=>{
+  console.log("Watch")
+  getMember()
+})
 onMounted(async () => {
   await getMember();
 });
@@ -72,9 +79,12 @@ const memLogout = async () => {
   const cf = window.confirm("ต้องการออกจากระบบ?");
   if (cf) {
     try {
+      console.log(  authStore.isLogin)
       const response = await axios.get(`http://localhost:3000/members/logout`);
+      authStore.logout()  
+      getMember()
       router.push("/");
-      window.location.reload()
+      // window.location.reload()
     } catch (err) {
       console.log(err);
     }
