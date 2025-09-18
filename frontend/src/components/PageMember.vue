@@ -1,5 +1,5 @@
 <template>
-  Member
+  <h1>Member</h1>
 </template>
 
 

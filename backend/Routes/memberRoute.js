@@ -4,6 +4,7 @@
 
     const router = express.Router()
 
+    router.get("/members/detail",memberController.getMember)
     router.post("/members",memberController.postMember)
     router.post("/members/login",memberController.loginMember)
 

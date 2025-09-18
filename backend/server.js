@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import productRoute from './Routes/productRoute.js'
 import memberRoute from './Routes/memberRoute.js'
 import cors from 'cors'
+import cookieParser from "cookie-parser";
 //use
 const app = express();
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(cors({
 
 app.use("/img_pd",express.static("img_pd"))
 app.use(bodyParser.json());
+app.use(cookieParser())
 app.use(productRoute)
 app.use(memberRoute)
 

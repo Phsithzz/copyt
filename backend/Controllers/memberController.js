@@ -4,6 +4,38 @@ import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 dotenv.config();
 
+export const getMember = async (req, res) => {
+  console.log("GET /member is requested.");
+  const token = req.cookies.token
+  if(!token){
+      return res.json({
+        message:"No Member",login:false
+      })
+    }
+  try {
+    const secret_key = process.env.SECRET_KEY
+    const  member = jwt.verify(token,secret_key)
+    console.log(member)
+    return res.json({
+      memEmail:member.memEmail,
+      memName:member.memName,
+      dutyId:member.dutyId,
+      login:true
+    })
+
+
+
+    }
+
+  catch (err) {
+    console.log(err);
+    return res.json({
+      message: "The information was falsified",
+      login: false,
+    });
+  }
+};
+
 export const postMember = async (req, res) => {
   console.log("POST /member is requested.");
   try {
