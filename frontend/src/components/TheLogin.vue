@@ -1,7 +1,7 @@
 <template>
   <div class="row mt-5">
     <div class="col-sm-12 col-md-6 col-lg-6 mb-5">
-      <img src="../assets/LogoSRC.png" alt="" height="80%" width="80%">
+      <img src="../assets/LogoSRC.png" alt="" class="ms-5"   width="80%">
     </div>
     <div class="col-sm-12 col-md-6 col-lg-6 mb3">
       <!-- เมื่อสั่ง Submit ให้เรียก Function handleSubmit -->
@@ -45,8 +45,10 @@
 <script setup>
 import { ref } from 'vue'; // import function ref มาจาก v
 import axios from 'axios';
+import { useRouter } from 'vue-router';
+axios.defaults.withCredentials = true
 
-
+const router = useRouter()
 const loginName = ref(null)
 const password = ref(null)
 const login = ref(null)
@@ -61,6 +63,9 @@ const handleSubmit = async () => {
     console.log(response.data)
     login.value = response.data.login
     message.value = response.data.message
+    if(login.value){
+      router.push('/pagemember')
+    }
   }
   catch (err) {
     console.log(err)

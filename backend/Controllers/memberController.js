@@ -1,7 +1,8 @@
 import database from "../Services/database.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import dotevn from "dotenv"
+import dotenv from "dotenv"
+dotenv.config();
 
 export const postMember = async (req, res) => {
   console.log("POST /member is requested.");
@@ -91,13 +92,16 @@ export const loginMember = async (req, res) => {
                 sameSite:'strict' // ป้องกันส่ง Cookie ข้าม Domain
             })
             res.json({message: `Login Success`,login:true})
-      res.json({
-            message:`Login Success `,login:true
-
-        })
+    
     }
     else{
-        return res.json({
+      res.clearCookie('token',{
+                // maxAge:3600000, //3,600,000 ms --> 60 minute -->1hr,
+                httpOnly: true, // ป้องกันการเข้าถึง Token ผ่าน JavaScript (ป้องกัน XSS)
+                secure: true,
+                sameSite:'strict' // ป้องกันส่ง Cookie ข้าม Domain
+            })
+        res.json({
             message:"Login Fail",login:false
         })
     }

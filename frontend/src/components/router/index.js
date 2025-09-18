@@ -3,6 +3,7 @@ import TheProduct from "../TheProduct.vue"
 import TheLogin from "../TheLogin.vue"
 import TheHome from "../TheHome.vue"
 import TheRegister from "../TheRegister.vue"
+import PageMember from "../PageMember.vue"
 
 const routes = [
     {
@@ -24,6 +25,11 @@ const routes = [
         path:'/register',
         name:'Register',
         component:TheRegister
+    },
+    {
+        path:'/pagemember',
+        name:'PageMember',
+        component:PageMember
     }
 ]
 const router = createRouter({
