@@ -3,8 +3,11 @@ import express from "express";
 import database from "./Services/database.js";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
+
 import productRoute from './Routes/productRoute.js'
 import memberRoute from './Routes/memberRoute.js'
+import cartRoute from './Routes/cartRoute.js'
+
 import cors from 'cors'
 import cookieParser from "cookie-parser";
 //use
@@ -23,8 +26,10 @@ app.use(cors({
 app.use("/img_pd",express.static("img_pd"))
 app.use(bodyParser.json());
 app.use(cookieParser())
+
 app.use(productRoute)
 app.use(memberRoute)
+app.use(cartRoute)
 
 //port
 const port = process.env.PORT || 3000;

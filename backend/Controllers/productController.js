@@ -219,3 +219,5 @@ export const getThreeProduct = async (req, res) => {
     });
   }
 };
+
+//แสดงรายละเอียดสินค้า

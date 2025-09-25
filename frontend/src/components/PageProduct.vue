@@ -1,17 +1,26 @@
 <template>
 
-  <div class="row">
-    <div v-for="(pd, pdId) in products" :key="pdId" class="col-lg-4 col-md-6 col-sm-12">
-      <div class="card" style="width: 18rem;background-color:#EEEEEE;">
-        <img :src="`http://localhost:3000/img_pd/${pd.pdId}.jpg`" class="card-img-top p-2" alt="" />
-        <div class="card-body">
-          <h5 class="card-title">{{ pd.pdName }}</h5>
-          <p class="card-text">- {{ pd.pdPrice }}</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+    <!-- ส่วนแสดงผล -->
+    <div class="row">
+        <div v-for="(pd,pdId) in products" :key="pdId" class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card mt-3" style="width: 18rem;background-color: #EEEEEE;">
+               <img :src="`http://localhost:3000/img_pd/${pd.pdId}.jpg`" class="card-img-top p-2"  lt="">
+                <div class="card-body">
+                    <h5 class="card-title">{{ pd.pdName }}</h5>
+                    <p class="card-text">{{ pd.brand?.brandName || "ไม่ระบุยี่ห้อ"}} - {{ pd.pdPrice }}</p>
+                    <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    <!-- กำหนด router-link แสดง Component ProductShow -->
+                    <!-- จะมีการส่งParameter ไปกับ router-link ด้วยจะต้องใช้ :to และกำหนด params -->
+                    <!-- และส่งเป็นลักษณะชุดข้อมูล key:value -->
+                    <!-- สามารถส่ง parameter ได้หลายตัวโดยระบุเป็นชุดข้อมูลซ้่อนเข้าไปได้ -->
+                    <router-link :to="{name:'ProductShow',params:{pdId:pd.pdId} }"
+                        style="text-decoration: none;">
+                        <div  class="btn btn-primary">ดูรายละเอียด</div>
+                    </router-link>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script setup>
