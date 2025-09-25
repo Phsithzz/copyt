@@ -22,6 +22,20 @@
               <div class="nav-link fw-bold text-white">{{ memName }}</div>
             </router-link>
           </li>
+
+             <li class="nav-item " v-if="login">
+                        <router-link to="/cartlist" style="text-decoration: none;">
+                            <div class="nav-link fw-bold text-white">Cart</div>
+                        </router-link>
+                    </li>
+
+           <li class="nav-item  pe-3"  v-if="login">
+            <CartInfo />
+          </li>
+
+       
+
+
           <li class="nav-item " v-if="login">
             <a href="#" @click="memLogout()" style="text-decoration: none">
               <div class="nav-link fw-bold text-white">ลงชื่อออก</div>
@@ -32,6 +46,8 @@
               <div class="nav-link text-white">Login</div>
             </router-link>
           </li>
+
+          
        
         </ul>
       </div>
@@ -42,6 +58,7 @@
 import { onMounted, ref,watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/authStore";
+import CartInfo from './CartInfo.vue';
 import axios from "axios";
 axios.defaults.withCredentials = true;
 

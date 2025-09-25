@@ -59,7 +59,10 @@
 import { onMounted, ref } from 'vue'; // import function ref มาจาก vue
 import { useRoute } from 'vue-router' //useRoute มีไว้เพื่อ อ่าน ข้อมูล useRouter มีไว้เพื่อ สั่งการ ให้เปลี่ยนหน้า
 import axios from 'axios';
+import { useCartStore } from '../stores/cartStore';
 axios.defaults.withCredentials = true
+// store
+const cartStore = useCartStore()
 
 
 const route = useRoute()
@@ -148,6 +151,9 @@ const addCartDtl = async () => {
         const response = await axios.post(
             `http://localhost:3000/carts/addcartdtl`, cartdtl
         )
+        // **** กำหนดการเปลี่ยนแปลงใน Store
+        cartStore.updateQty()
+        cartStore.setId(cartId.value)
         // 3.รับค่า Response จาก Backend เพื่ีอแสดงผล
         backendMessage.value = response.data.messageAddCartDtl;
         console.log(response.data)

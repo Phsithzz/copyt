@@ -122,3 +122,86 @@ export const postCartDtl = async(req,res)=>{
   }
 }
 
+export const sumCart = async(req,res) =>{
+        console.log(`GET SumCart ${req.params.id} is requested `)
+    const result = await database.query({
+        text: `  SELECT SUM(qty) AS qty,SUM(qty*price) AS money
+                FROM "cartDtl" ctd
+                WHERE ctd."cartId" = $1` ,
+        values: [req.params.id] //ค่า Parameter ที่ส่งมา
+    })
+    console.log(result.rows[0])
+    return res.json({
+        id: req.params.id,
+        qty: result.rows[0].qty,
+        money: result.rows[0].money
+    })
+
+}
+
+export const getCart = async(req,res)=>{
+    console.log(`GET Cart is Requested`)
+  try {
+      const result = await database.query({
+          text:`  SELECT ct.*, SUM(ctd.qty) AS sqty,SUM(ctd.price*ctd.qty) AS sprice
+                  FROM carts ct LEFT JOIN "cartDtl" ctd ON ct."cartId" = ctd."cartId"
+                  WHERE ct."cartId"=$1
+                  GROUP BY ct."cartId" ` ,
+          values:[req.params.id]
+      })
+      console.log(`id=${req.params.id} \n`+result.rows[0])
+      return res.json(result.rows)
+  }
+  catch (err) {
+      return res.json({
+          error: err.message
+      })
+  }
+
+}
+
+export const getCartDtl = async(req,res)=>{
+console.log(`GET CartDtl is Requested`)
+  try {
+      const result = await database.query({
+      text:`  SELECT  ROW_NUMBER() OVER (ORDER BY ctd."pdId") AS row_number,
+                      ctd."pdId",pd."pdName",ctd.qty,ctd.price
+              FROM    "cartDtl" ctd LEFT JOIN "products" pd ON ctd."pdId" = pd."pdId"  
+              WHERE ctd."cartId" =$1
+              ORDER BY ctd."pdId" ` ,
+          values:[req.params.id]
+      })
+      console.log(`id=${req.params.id} \n`+result.rows[0])
+      return res.json(result.rows)
+  }
+  catch (err) {
+      return res.json({
+          error: err.message
+      })
+  }
+
+}
+
+export const getCartByCus = async(req,res)=>{
+
+  console.log(`POST Cart By Customer is Requested`)
+  try {
+      const result = await database.query({
+          text:`  SELECT ROW_NUMBER() OVER (ORDER BY ct."cartId" DESC) AS row_number,
+                          ct.*, SUM(ctd.qty) AS sqty,SUM(ctd.price*ctd.qty) AS sprice
+                  FROM carts ct LEFT JOIN "cartDtl" ctd ON ct."cartId" = ctd."cartId"
+                  WHERE ct."cusId"=$1
+                  GROUP BY ct."cartId"
+                  ORDER BY ct."cartId" DESC` ,
+          values:[req.body.id]
+      })
+      console.log(`id=${req.body.id} \n`+result.rows[0])
+      return res.json(result.rows)
+  }
+  catch (err) {
+      return res.json({
+          error: err.message
+      })
+  }
+
+}
