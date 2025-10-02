@@ -18,7 +18,10 @@ dotenv.config();
 // app.use(cors())
 // กำหนด Option ของ cors เพิ่มเติมเมื่อมีการส่งข้อมูล Cookie หรือ Header
 app.use(cors({
-    origin:['http://localhost:5173','http://127.0.0.1:5173'], //Domain ของ Frontend
+    origin:['http://localhost', 'http://127.0.0.1',
+      'http://localhost:5173','http://127.0.0.1:5173',
+      'http://localhost:4173','http://127.0.0.1:4173'
+    ], //Domain ของ Frontend
     methods:['GET','POST','PUT','DELETE'], //Method ที่อนุญาต
     credentials:true  //ให้ส่งข้อมูล Header+Cookie ได้
 }))
