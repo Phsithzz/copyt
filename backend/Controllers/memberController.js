@@ -2,7 +2,25 @@ import database from "../Services/database.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
+import multer from "multer"
 dotenv.config();
+
+// upload part
+// กำหนดตำแหน่งที่จะเก็บ file ที่ upload --> img_mem
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'img_mem')
+    },
+    // กำหนดชื่อ file
+    filename: function (req, file, cb) {
+        const filename = `${req.body.memEmail}.jpg`
+        cb(null, filename)
+    }
+})
+// จำกัดประเภทของไฟล์ที่อัปโหลด
+const upload = multer({
+    storage: storage,
+}).single('file');
 
 export const logoutMember = async (req, res) => {
   console.log("POST /logout member is requested.");
@@ -24,7 +42,6 @@ catch (err) {
     });
   }
 };
-
 
 export const getMember = async (req, res) => {
   console.log("GET /member is requested.");
@@ -169,3 +186,14 @@ export const loginMember = async (req, res) => {
     });
   }
 };
+
+//ส่วน Upload File
+export async function uploadMember(req, res) {
+   console.log("Upload Member Image")
+    upload(req, res, (err) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(200).json({ message: 'File uploaded successfully!' });
+    });
+}

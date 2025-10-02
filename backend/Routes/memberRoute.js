@@ -8,5 +8,6 @@
     router.get("/members/logout",memberController.logoutMember)
     router.post("/members",memberController.postMember)
     router.post("/members/login",memberController.loginMember)
+    router.post('/members/uploadimg',memberController.uploadMember)
 
     export default router 

@@ -24,6 +24,7 @@ app.use(cors({
 }))
 
 app.use("/img_pd",express.static("img_pd"))
+app.use("/img_mem",express.static("img_mem"))
 app.use(bodyParser.json());
 app.use(cookieParser())
 
